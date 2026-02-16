@@ -3,85 +3,148 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Formulario Unificado Personalizado</title>
+    <title>FU - FORMULARIO UNIFICADO CGE</title>
     <style>
-        body { font-family: Arial, sans-serif; font-size: 12px; line-height: 1.4; }
-        .container { max-width: 900px; margin: auto; border: 1px solid #000; padding: 20px; }
-        h2 { text-align: center; background: #f0f0f0; padding: 5px; border: 1px solid #000; }
-        .rubro-header { font-weight: bold; background: #e0e0e0; padding: 5px; margin-top: 10px; border: 1px solid #000; }
-        table { width: 100%; border-collapse: collapse; margin-bottom: 10px; }
-        th, td { border: 1px solid #000; padding: 5px; text-align: left; }
+        :root { --border-color: #000; }
+        body { font-family: 'Arial', sans-serif; font-size: 11px; margin: 20px; color: #000; }
+        .form-container { max-width: 900px; margin: 0 auto; border: 2px solid var(--border-color); padding: 15px; }
         
-        /* Estilo específico solicitado para Rubro 5 */
-        .fuente-reducida {
-            font-size: 11px !important; /* 1 punto menos que el estándar de 12px */
+        /* Encabezado */
+        .header-table { width: 100%; border-bottom: 2px solid #000; margin-bottom: 10px; }
+        .logo-cge { width: 80px; }
+        .title-main { text-align: center; font-size: 16px; font-weight: bold; }
+
+        /* Estructura de Rubros */
+        .rubro-titulo { background-color: #e8e8e8; font-weight: bold; padding: 5px; border: 1px solid #000; margin-top: 10px; text-transform: uppercase; }
+        table { width: 100%; border-collapse: collapse; margin-top: -1px; }
+        td, th { border: 1px solid #000; padding: 4px; vertical-align: middle; }
+        
+        /* Inputs */
+        input[type="text"], input[type="date"], select { 
+            width: 100%; border: none; outline: none; background: transparent; font-family: inherit; font-size: 11px; 
         }
+        input:focus { background-color: #fff9c4; }
+
+        /* --- TUS CAMBIOS SOLICITADOS --- */
+        /* 1. Fuente reducida para SECCIÓN/DIVISIÓN en Rubro 5 */
+        .seccion-input { font-size: 10px !important; font-weight: bold; } 
         
-        input, select { width: 100%; box-sizing: border-box; }
-        .no-print { margin-bottom: 20px; }
+        /* 2. Selector de año 2026-2099 en Rubro 1 */
+        .select-anio { font-weight: bold; border: 1px solid #ccc !important; width: auto !important; }
+
+        /* Diseño de Grilla Rubro 5 */
+        .grid-r5 th { font-size: 9px; text-align: center; background: #f2f2f2; }
+
+        @media print {
+            .no-print { display: none; }
+            body { margin: 0; }
+            .form-container { border: none; }
+        }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <h2>FORMULARIO UNIFICADO [FU-01]</h2>
+<div class="no-print" style="text-align:center; margin-bottom: 20px;">
+    <button onclick="window.print()" style="padding: 10px 20px; cursor: pointer; background: #28a745; color: white; border: none; border-radius: 5px;">
+        GENERAR PDF / IMPRIMIR FORMULARIO
+    </button>
+</div>
 
-    <div class="rubro-header">RUBRO 1: CARÁTULA DEL TRÁMITE</div>
+<div class="form-container">
+    <table class="header-table">
+        <tr>
+            <td style="border:none; width: 20%;"><img src="https://explora.entrerios.gov.ar/assets/img/logo-cge.png" alt="CGE" class="logo-cge"></td>
+            <td style="border:none; text-align: center;">
+                <div class="title-main">FORMULARIO UNIFICADO [FU-01]</div>
+                <div>CONSEJO GENERAL DE EDUCACIÓN - ENTRE RÍOS</div>
+            </td>
+            <td style="border:none; width: 20%; text-align: right;"><strong>EXPEDIENTE Nº:</strong><br>__________</td>
+        </tr>
+    </table>
+
+    <div class="rubro-titulo">Rubro 1: Carátula del Trámite</div>
     <table>
         <tr>
-            <td>TIPO DE TRÁMITE: <input type="text" style="width: 50px;"></td>
-            <td>DPT: <input type="text" style="width: 50px;"></td>
-            <td>
-                AÑO: 
-                <select id="año-tramite" name="año-tramite">
-                    <script>
-                        const selectAño = document.currentScript.parentElement;
-                        for (let i = 2026; i <= 2099; i++) {
-                            let opt = document.createElement('option');
-                            opt.value = i;
-                            opt.innerHTML = i;
-                            selectAño.appendChild(opt);
-                        }
-                    </script>
-                </select>
+            <td>TIPO: <input type="text" style="width: 80px;" placeholder="DP/DC/CL"></td>
+            <td>DTO: <input type="text" style="width: 40px;"></td>
+            <td>AÑO: 
+                <select id="anio" class="select-anio">
+                    </select>
             </td>
         </tr>
     </table>
 
-    <div class="rubro-header">RUBRO 5: DESCRIPCIÓN DEL CARGO U HORAS AFECTADAS AL TRÁMITE</div>
+    <div class="rubro-titulo">Rubro 2: Datos del Solicitante</div>
     <table>
-        <thead>
-            <tr>
-                <th>CARGO/HORA</th>
-                <th>ASIGNATURA</th>
-                <th style="width: 15%;">SECCIÓN/DIVISIÓN</th>
-                <th>TURNO</th>
-                <th>CURSO</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td><input type="text"></td>
-                <td><input type="text"></td>
-                <td><input type="text" class="fuente-reducida" placeholder="Tamaño reducido"></td>
-                <td><input type="text"></td>
-                <td><input type="text"></td>
-            </tr>
-            <tr>
-                <td><input type="text"></td>
-                <td><input type="text"></td>
-                <td><input type="text" class="fuente-reducida" placeholder="Tamaño reducido"></td>
-                <td><input type="text"></td>
-                <td><input type="text"></td>
-            </tr>
-            </tbody>
+        <tr>
+            <td colspan="2">APELLIDO Y NOMBRE: <input type="text"></td>
+            <td>CUIL: <input type="text" placeholder="00-00000000-0"></td>
+        </tr>
+        <tr>
+            <td>TIPO DOC: <select style="width: 60px;"><option>DNI</option><option>LC</option></select> Nº: <input type="text" style="width: 100px;"></td>
+            <td>SEXO: <select style="width: 80px;"><option>MASCULINO</option><option>FEMENINO</option></select></td>
+            <td>FECHA NAC: <input type="date"></td>
+        </tr>
     </table>
 
-    <div class="no-print">
-        <button onclick="window.print()">Generar PDF / Imprimir</button>
-    </div>
+    <div class="rubro-titulo">Rubro 3 y 4: Datos del Establecimiento e Inicio</div>
+    <table>
+        <tr>
+            <td>ESTABLECIMIENTO: <input type="text"></td>
+            <td>CUE: <input type="text" style="width: 80px;"></td>
+        </tr>
+        <tr>
+            <td>FECHA DESDE: <input type="date"></td>
+            <td>FECHA HASTA: <input type="date"></td>
+        </tr>
+    </table>
+
+    <div class="rubro-titulo">Rubro 5: Descripción del cargo u horas afectadas</div>
+    <table class="grid-r5">
+        <tr>
+            <th>CARGO / CÁTEDRA</th>
+            <th>MATERIA / ASIGNATURA</th>
+            <th style="width: 100px;">SECCIÓN / DIVISIÓN</th>
+            <th>TURNO</th>
+            <th>L</th> <th>M</th> <th>M</th> <th>J</th> <th>V</th>
+        </tr>
+        <script>
+            for(let i=0; i<5; i++) {
+                document.write(`
+                <tr>
+                    <td><input type="text"></td>
+                    <td><input type="text"></td>
+                    <td><input type="text" class="seccion-input" placeholder="FUENTE -1pt"></td>
+                    <td><input type="text" style="text-align:center;"></td>
+                    <td><input type="text" style="width:15px;"></td>
+                    <td><input type="text" style="width:15px;"></td>
+                    <td><input type="text" style="width:15px;"></td>
+                    <td><input type="text" style="width:15px;"></td>
+                    <td><input type="text" style="width:15px;"></td>
+                </tr>`);
+            }
+        </script>
+    </table>
+
+    <div class="rubro-titulo">Rubro 6: Firmas de los responsables</div>
+    <table style="height: 100px;">
+        <tr>
+            <td style="width: 50%; vertical-align: bottom; text-align: center;">__________________________<br>Firma del Solicitante</td>
+            <td style="width: 50%; vertical-align: bottom; text-align: center;">__________________________<br>Sello y Firma Directivo</td>
+        </tr>
+    </table>
 </div>
 
-</body>
+<script>
+    // Generar años 2026 a 2099
+    const selectAnio = document.getElementById('anio');
+    for (let i = 2026; i <= 2099; i++) {
+        let opt = document.createElement('option');
+        opt.value = i;
+        opt.innerHTML = i;
+        selectAnio.appendChild(opt);
+    }
+</script>
 
+</body>
 </html>
